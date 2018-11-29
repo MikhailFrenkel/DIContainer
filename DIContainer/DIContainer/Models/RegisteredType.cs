@@ -11,5 +11,7 @@ namespace DIContainer.Models
         public object Implementation { get; set; }
 
         public bool IsSingleton { get; set; } = false;
+
+        public string FullName { get; set; }
     }
 }

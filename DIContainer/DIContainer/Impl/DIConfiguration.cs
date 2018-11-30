@@ -37,6 +37,8 @@ namespace DIContainer
 
         private RegisteredType RegisterType(Type dependencyType, Type implementationType)
         {
+            CheckImplementationType(implementationType);
+
             var registerType = new RegisteredType()
             {
                 Dependency = dependencyType,
@@ -59,6 +61,19 @@ namespace DIContainer
             }
 
             return registerType;
+        }
+
+        private void CheckImplementationType(Type type)
+        {
+            if (type.IsInterface)
+            {
+                throw new Exception($"Type {type.FullName} cannot be an interface");
+            }
+
+            if (type.IsAbstract)
+            {
+                throw new Exception($"Type {type.FullName} cannot be an abstract");
+            }
         }
     }
 }

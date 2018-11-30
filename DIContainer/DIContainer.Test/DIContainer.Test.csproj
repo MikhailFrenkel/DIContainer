@@ -49,6 +49,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\AnotherBar.cs" />
+    <Compile Include="Classes\AnotherFoo.cs" />
     <Compile Include="Classes\Bar.cs" />
     <Compile Include="Classes\Foo.cs" />
     <Compile Include="Classes\Service.cs" />

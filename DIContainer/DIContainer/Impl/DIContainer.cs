@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using DIContainer.Interfaces;
 using DIContainer.Models;
 
@@ -69,11 +67,6 @@ namespace DIContainer
 
         private object GetInstance(Type type, RegisteredType registeredType)
         {
-            if (type.IsValueType)
-            {
-                return Activator.CreateInstance(type);
-            }
-
             if (registeredType.IsSingleton &&
                 registeredType.Instance != null)
             {
@@ -113,7 +106,7 @@ namespace DIContainer
                 var registeredType = _conf.GetRegisteredType(parameter.ParameterType);
                 if (registeredType == null)
                 {
-                    throw new Exception($"Not registered type {parameter.Name}");
+                    throw new Exception($"Not registered type {parameter.ParameterType.FullName}");
                 }
 
                 parameters.Add(GetInstance(parameter.ParameterType, registeredType));

@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using DIContainer.Extensions;
 using DIContainer.Test.Classes;
+using DIContainer.Test.Classes.Base;
 using DIContainer.Test.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DIContainer.Test
 {
+    //TODO: check generic
+
     [TestClass]
     public class DIContainerTest
     {
@@ -67,6 +70,21 @@ namespace DIContainer.Test
 
             var bars = container.Resolve<IEnumerable<IBar>>();
             var foos = container.Resolve<ICollection<IFoo>>();
+        }
+
+        [TestMethod]
+        public void TestMethod5()
+        {
+            var conf = new DIConfiguration();
+            conf.Register<BarBase, AbstrBar>().AsSingleton();
+            conf.Register<FooBase, AbstrFoo>();
+
+            var container = new DIContainer(conf);
+
+            var bar = container.Resolve<BarBase>();
+            var foo = container.Resolve<FooBase>();
+
+            var fl = foo.BarBase.Equals(bar);
         }
     }
 }

@@ -49,9 +49,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\AbstrBar.cs" />
+    <Compile Include="Classes\AbstrFoo.cs" />
     <Compile Include="Classes\AnotherBar.cs" />
     <Compile Include="Classes\AnotherFoo.cs" />
     <Compile Include="Classes\Bar.cs" />
+    <Compile Include="Classes\Base\BarBase.cs" />
+    <Compile Include="Classes\Base\FooBase.cs" />
     <Compile Include="Classes\Foo.cs" />
     <Compile Include="Classes\Service.cs" />
     <Compile Include="Interfaces\IBar.cs" />

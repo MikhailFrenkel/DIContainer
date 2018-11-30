@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DIContainer.Interfaces;
 using DIContainer.Models;
 
@@ -22,6 +21,18 @@ namespace DIContainer
             where TImplementation : TDependency
         {
             RegisterType(typeof(TDependency), typeof(TImplementation).FullName);
+        }
+
+        public RegisteredType GetRegisteredType(Type type)
+        {
+            return _container.TryGetValue(type, out var registeredTypes)
+                ? registeredTypes.FirstOrDefault()
+                : null;
+        }
+
+        public IEnumerable<RegisteredType> GetRegisteredTypes(Type type)
+        {
+            return _container.TryGetValue(type, out var registeredTypes) ? registeredTypes : null;
         }
 
         private void RegisterType(Type type, string fullName)

@@ -11,16 +11,16 @@ namespace DIContainer
         private readonly Dictionary<Type, ICollection<RegisteredType>> _container = 
             new Dictionary<Type, ICollection<RegisteredType>>();
 
-        public void Register<TImplementation>() where TImplementation : class
+        public RegisteredType Register<TImplementation>() where TImplementation : class
         {
-            RegisterType(typeof(TImplementation), typeof(TImplementation).FullName);
+            return RegisterType(typeof(TImplementation), typeof(TImplementation));
         }
 
-        public void Register<TDependency, TImplementation>()
+        public RegisteredType Register<TDependency, TImplementation>()
             where TDependency : class 
             where TImplementation : TDependency
         {
-            RegisterType(typeof(TDependency), typeof(TImplementation).FullName);
+            return RegisterType(typeof(TDependency), typeof(TImplementation));
         }
 
         public RegisteredType GetRegisteredType(Type type)
@@ -35,28 +35,30 @@ namespace DIContainer
             return _container.TryGetValue(type, out var registeredTypes) ? registeredTypes : null;
         }
 
-        private void RegisterType(Type type, string fullName)
+        private RegisteredType RegisterType(Type dependencyType, Type implementationType)
         {
             var registerType = new RegisteredType()
             {
-                Dependency = type,
-                FullName = fullName
+                Dependency = dependencyType,
+                Implementation = implementationType
             };
 
-            if (_container.TryGetValue(type, out var registeredTypes))
+            if (_container.TryGetValue(dependencyType, out var registeredTypes))
             {
-                if (registeredTypes.All(x => x.FullName != registerType.FullName))
+                if (registeredTypes.All(x => x.Implementation != implementationType))
                 {
                     registeredTypes.Add(registerType);
                 }
             }
             else
             {
-                _container.Add(type, new List<RegisteredType>()
+                _container.Add(dependencyType, new List<RegisteredType>()
                 {
                     registerType
                 });
             }
+
+            return registerType;
         }
     }
 }

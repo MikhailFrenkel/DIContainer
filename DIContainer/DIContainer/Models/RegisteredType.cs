@@ -8,10 +8,10 @@ namespace DIContainer.Models
     {
         public Type Dependency { get; set; }
 
-        public object Implementation { get; set; }
+        public Type Implementation { get; set; }
+
+        public object Instance { get; set; }
 
         public bool IsSingleton { get; set; } = false;
-
-        public string FullName { get; set; }
     }
 }

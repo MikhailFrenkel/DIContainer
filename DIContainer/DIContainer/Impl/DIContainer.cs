@@ -12,7 +12,7 @@ namespace DIContainer
 {
     public class DIContainer : IDIContainer
     {
-        private Stack<Type> _stack = new Stack<Type>();
+        private readonly Stack<Type> _stack = new Stack<Type>();
         private readonly IConfiguration _conf;
         private static readonly object Sync = new object();
 
@@ -40,10 +40,10 @@ namespace DIContainer
             var registeredType = _conf.GetRegisteredType(type);
             if (registeredType != null)
             {
-                return GetInstance<TDependency>(registeredType);
+                return (TDependency)GetInstance(type, registeredType);
             }
 
-            return null;
+            throw new Exception($"Not registered type {type.FullName}");
         }
 
         private TDependency ResolveCollection<TDependency>()
@@ -67,27 +67,23 @@ namespace DIContainer
             return (TDependency)collection;
         }
 
-        private TDependency GetInstance<TDependency>(RegisteredType registeredType)
+        private object GetInstance(Type type, RegisteredType registeredType)
         {
-            var type = typeof(TDependency);
-
             if (type.IsValueType)
             {
-                return Activator.CreateInstance<TDependency>();
+                return Activator.CreateInstance(type);
             }
 
-            if (registeredType.IsSingleton)
+            if (registeredType.IsSingleton &&
+                registeredType.Instance != null)
             {
-                if (registeredType.Implementation != null)
-                {
-                    return (TDependency) registeredType.Implementation;
-                }
+                return registeredType.Instance;
             }
 
-            return (TDependency)GetInstance(type, registeredType);
+            return CreateInstance(type, registeredType);
         }
 
-        private object GetInstance(Type type, RegisteredType registeredType)
+        private object CreateInstance(Type type, RegisteredType registeredType)
         {
             if (_stack.Contains(type))
             {
@@ -96,17 +92,16 @@ namespace DIContainer
 
             _stack.Push(type);
 
-            var constructor = type.GetConstructors()
+            var constructor = registeredType.Implementation.GetConstructors()
                                 .OrderByDescending(x => x.GetParameters().Length)
                                 .FirstOrDefault();
 
             var parameters = GetConstructorParameters(constructor);
-
-            registeredType.Implementation = Activator.CreateInstance(type, parameters);
+            registeredType.Instance = Activator.CreateInstance(registeredType.Implementation, parameters);
 
             _stack.Pop();
 
-            return registeredType.Implementation;
+            return registeredType.Instance;
         }
 
         private object[] GetConstructorParameters(ConstructorInfo constructor)

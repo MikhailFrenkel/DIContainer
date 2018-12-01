@@ -2,7 +2,7 @@
 
 namespace DIContainer.Test.Classes
 {
-    internal class ServiceGeneric : IServiceGeneric<IService>
+    internal class ServiceGeneric<T> : IServiceGeneric<T> where T : IService
     {
         public IService Service { get; }
 

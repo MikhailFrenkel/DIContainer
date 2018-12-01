@@ -11,6 +11,11 @@ namespace DIContainer
         private readonly Dictionary<Type, ICollection<RegisteredType>> _container = 
             new Dictionary<Type, ICollection<RegisteredType>>();
 
+        public RegisteredType Register(Type dependency, Type implementation)
+        {
+            return RegisterType(dependency, implementation);
+        }
+
         public RegisteredType Register<TImplementation>() where TImplementation : class
         {
             return RegisterType(typeof(TImplementation), typeof(TImplementation));

@@ -2,6 +2,6 @@
 {
     internal interface IServiceGeneric<T> where T : IService
     {
-        T Service { get; }
+        IService Service { get; }
     }
 }

@@ -8,6 +8,8 @@ namespace DIContainer.Interfaces
 {
     public interface IConfiguration
     {
+        RegisteredType Register(Type dependency, Type implementation);
+
         RegisteredType Register<TImplementation>() where TImplementation : class;
 
         RegisteredType Register<TDependency, TImplementation>()

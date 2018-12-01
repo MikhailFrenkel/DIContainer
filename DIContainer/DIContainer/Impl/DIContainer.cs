@@ -36,6 +36,11 @@ namespace DIContainer
             }
 
             var registeredType = _conf.GetRegisteredType(type);
+            if (registeredType == null && type.IsGenericType)
+            {
+                registeredType = _conf.GetRegisteredType(type.GetGenericTypeDefinition());
+            }
+
             if (registeredType != null)
             {
                 return (TDependency)GetInstance(type, registeredType);
@@ -85,12 +90,19 @@ namespace DIContainer
 
             _stack.Push(type);
 
-            var constructor = registeredType.Implementation.GetConstructors()
+            var instanceType = registeredType.Implementation;
+
+            if (instanceType.IsGenericType)
+            {
+                instanceType = instanceType.MakeGenericType(type.GenericTypeArguments);
+            }
+
+            var constructor = instanceType.GetConstructors()
                                 .OrderByDescending(x => x.GetParameters().Length)
                                 .FirstOrDefault();
 
             var parameters = GetConstructorParameters(constructor);
-            registeredType.Instance = Activator.CreateInstance(registeredType.Implementation, parameters);
+            registeredType.Instance = Activator.CreateInstance(instanceType, parameters);
 
             _stack.Pop();
 

@@ -106,11 +106,56 @@ namespace DIContainer.Test
             conf.Register<IBar, Bar>().AsSingleton();
             conf.Register<IFoo, Foo>().InstancePerRequest();
             conf.Register<IService, Service>();
-            conf.Register<IServiceGeneric<IService>, ServiceGeneric>();
+            conf.Register<IServiceGeneric<IService>, ServiceGeneric<IService>>();
 
             var container = new DIContainer(conf);
 
             var serviceGeneric = container.Resolve<IServiceGeneric<IService>>();
+        }
+
+        [TestMethod]
+        public void TestMethod8()
+        {
+            var conf = new DIConfiguration();
+            conf.Register<IBar, Bar>().AsSingleton();
+            conf.Register<IFoo, Foo>().InstancePerRequest();
+            conf.Register<IService, Service>();
+            conf.Register(typeof(IServiceGeneric<>), typeof(ServiceGeneric<>));
+
+            var container = new DIContainer(conf);
+
+            var serviceGeneric = container.Resolve<IServiceGeneric<IService>>();
+        }
+
+        [TestMethod]
+        public void WhyThisWork()
+        {
+            var conf = new DIConfiguration();
+            conf.Register<IBar, Bar>().AsSingleton();
+            conf.Register<IFoo, Foo>().InstancePerRequest();
+            conf.Register<IService, Service>();
+            conf.Register(typeof(IServiceGeneric<>), typeof(ServiceGeneric<>));
+
+            var container = new DIContainer(conf);
+
+            var serviceGeneric = container.Resolve<IServiceGeneric<IService>>();
+
+            //При получении конструктора возвращает конструктор класса Service?
+            var serviceGeneric2 = container.Resolve<IServiceGeneric<ServiceBase>>();
+        }
+
+        [TestMethod]
+        public void TestMethod9()
+        {
+            var conf = new DIConfiguration();
+            conf.Register<IBar, Bar>();
+            conf.Register<IBar, AnotherBar>();
+            conf.Register<IFoo, Foo>();
+            conf.Register<IFoo, AnotherFoo>();
+
+            var container = new DIContainer(conf);
+
+            var fooCollection = container.Resolve<ICollection<IFoo>>();
         }
     }
 }

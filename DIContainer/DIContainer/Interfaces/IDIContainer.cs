@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DIContainer.Interfaces
+﻿namespace DIContainer.Interfaces
 {
     public interface IDIContainer
     {

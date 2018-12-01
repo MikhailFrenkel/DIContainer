@@ -92,7 +92,7 @@ namespace DIContainer
 
             var instanceType = registeredType.Implementation;
 
-            if (instanceType.IsGenericType)
+            if (instanceType.IsGenericTypeDefinition)
             {
                 instanceType = instanceType.MakeGenericType(type.GenericTypeArguments);
             }

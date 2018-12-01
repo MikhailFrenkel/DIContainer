@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DIContainer.Test.Classes.Base;
+﻿using DIContainer.Test.Classes.Base;
 
 namespace DIContainer.Test.Classes
 {

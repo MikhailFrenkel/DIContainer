@@ -56,11 +56,14 @@
     <Compile Include="Classes\Bar.cs" />
     <Compile Include="Classes\Base\BarBase.cs" />
     <Compile Include="Classes\Base\FooBase.cs" />
+    <Compile Include="Classes\CycBar.cs" />
     <Compile Include="Classes\Foo.cs" />
     <Compile Include="Classes\Service.cs" />
+    <Compile Include="Classes\ServiceGeneric.cs" />
     <Compile Include="Interfaces\IBar.cs" />
     <Compile Include="Interfaces\IFoo.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\IServiceGeneric.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DIContainerTest.cs" />
   </ItemGroup>

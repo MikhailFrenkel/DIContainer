@@ -86,5 +86,31 @@ namespace DIContainer.Test
 
             var fl = foo.BarBase.Equals(bar);
         }
+
+        [TestMethod]
+        public void TestMethod6()
+        {
+            var conf = new DIConfiguration();
+            conf.Register<IFoo, Foo>();
+            conf.Register<IBar, CycBar>();
+
+            var container = new DIContainer(conf);
+
+            var bar = container.Resolve<IBar>();
+        }
+
+        [TestMethod]
+        public void TestMethod7()
+        {
+            var conf = new DIConfiguration();
+            conf.Register<IBar, Bar>().AsSingleton();
+            conf.Register<IFoo, Foo>().InstancePerRequest();
+            conf.Register<IService, Service>();
+            conf.Register<IServiceGeneric<IService>, ServiceGeneric>();
+
+            var container = new DIContainer(conf);
+
+            var serviceGeneric = container.Resolve<IServiceGeneric<IService>>();
+        }
     }
 }
